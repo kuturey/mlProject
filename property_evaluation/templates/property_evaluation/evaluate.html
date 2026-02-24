@@ -3,17 +3,123 @@
 <head>
     <meta charset="utf-8">
     <title>Оценка недвижимости - форма</title>
+    <link rel="stylesheet" href="/static/css/animations.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Затемнение фона */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background-image: url('/static/images/background.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            min-height: 100vh;
+            filter: brightness(0.7);
+            z-index: -2;
         }
+
+        /* Плавающие смайлики */
+        .floating-emoji {
+            position: fixed;
+            font-size: 60px;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: -1;
+            user-select: none;
+            animation: float 15s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        .emoji-1 {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+            transform: rotate(-10deg);
+        }
+
+        .emoji-2 {
+            top: 70%;
+            left: 8%;
+            font-size: 80px;
+            animation-delay: 2s;
+            transform: rotate(15deg);
+        }
+
+        .emoji-3 {
+            top: 30%;
+            right: 3%;
+            font-size: 70px;
+            animation-delay: 4s;
+            transform: rotate(-5deg);
+        }
+
+        .emoji-4 {
+            bottom: 15%;
+            right: 8%;
+            font-size: 90px;
+            animation-delay: 1s;
+            transform: rotate(20deg);
+        }
+
+        .emoji-5 {
+            top: 50%;
+            left: 15%;
+            font-size: 50px;
+            animation-delay: 5s;
+            transform: rotate(-15deg);
+        }
+
+        .emoji-6 {
+            bottom: 30%;
+            right: 15%;
+            font-size: 65px;
+            animation-delay: 3s;
+            transform: rotate(25deg);
+        }
+
+        .emoji-7 {
+            top: 80%;
+            right: 20%;
+            font-size: 55px;
+            animation-delay: 6s;
+            transform: rotate(-20deg);
+        }
+
+        .emoji-8 {
+            top: 15%;
+            left: 20%;
+            font-size: 75px;
+            animation-delay: 7s;
+            transform: rotate(8deg);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+            50% {
+                transform: translateY(0) rotate(0deg);
+            }
+            75% {
+                transform: translateY(20px) rotate(-5deg);
+            }
+        }
+
         .container {
             max-width: 1500px;
             margin: 20px auto;
@@ -22,7 +128,10 @@
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             backdrop-filter: blur(5px);
+            position: relative;
+            z-index: 1;
         }
+
         h1 {
             color: #000000;
             text-align: center;
@@ -30,9 +139,30 @@
             font-size: 70px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
+
         .form-group {
             margin-bottom: 20px;
+            position: relative;
         }
+
+        /* Подсказки при наведении */
+        .form-group:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #333;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 24px;
+            white-space: nowrap;
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 10;
+        }
+
         label {
             display: block;
             margin-bottom: 8px;
@@ -40,6 +170,7 @@
             font-weight: bold;
             font-size: 34px;
         }
+
         input, select {
             width: 100%;
             padding: 12px;
@@ -50,79 +181,272 @@
             transition: all 0.3s;
             box-sizing: border-box;
         }
+
         input:focus, select:focus {
             outline: none;
             border-color: #4CAF50;
             box-shadow: 0 0 5px rgba(76,175,80,0.3);
         }
-        button {
-            background: linear-gradient(135deg, #DEB887 0%, #8B4513 100%);
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 50px;
+
+        /* Эффект пульсации для незаполненных полей */
+        @keyframes pulse {
+            0%, 100% { border-color: #e0e0e0; }
+            50% { border-color: #ff6b6b; }
+        }
+
+        input:invalid, select:invalid {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Стили для кнопок */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        button, .btn-link {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            padding: 15px 50px;
+            min-width: 350px;
+            text-align: center;
             font-size: 46px;
             font-weight: bold;
-            cursor: pointer;
+            border-radius: 50px;
             transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-sizing: border-box;
+            white-space: nowrap;
+        }
+
+        button {
+            font-size: 60px;
+            background: linear-gradient(135deg, #DEB887 0%, #8B4513 100%);
+            color: white;
             box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
         }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
-        }
+
         .btn-link {
-            font-size: 46px;
+            font-size: 60px;
             background: linear-gradient(135deg, #800000 0%, #8B4513 100%);
-            text-decoration: none;
             color: white;
-            font-weight: 700;
-            padding: 12px 30px;
-            border-radius: 50px;
-            display: inline-block;
-            margin-left: 10px;
-            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
-        .btn-link:hover {
-            background: #555;
-            transform: translateY(-2px);
+
+        /* Эффект блика на кнопках */
+        button::after, .btn-link::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(transparent 30%, rgba(255, 255, 255, 0.3), transparent 70%);
+            transform: rotate(30deg);
+            transition: 0.5s;
+            opacity: 0;
+            z-index: -1;
         }
+
+        button:hover::after, .btn-link:hover::after {
+            opacity: 1;
+            transform: rotate(30deg) translate(10%, 10%);
+        }
+
+        button:hover, .btn-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
         .error {
             color: #f44336;
             font-size: 13px;
             margin-top: 5px;
         }
-        .button-group {
-            text-align: center;
-            margin-top: 30px;
-        }
+
         .checkbox-group {
             display: flex;
-            gap: 20px;
-            margin: 15px 0;
+            gap: 40px;
+            margin: 25px 0;
+            justify-content: center;
         }
+
         .checkbox-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 15px;
+            font-size: 34px;
         }
+
         .checkbox-item input {
-            width: auto;
+            width: 30px;
+            height: 30px;
+            transform: scale(1.5);
+            margin-right: 10px;
+            accent-color: #8B4513;
         }
+
         .checkbox-item label {
             margin: 0;
             font-weight: normal;
+            font-size: 34px;
+        }
+
+        /* Классы для анимаций из animations.css */
+        .slide-left {
+            animation: slideLeft 0.8s ease-out;
+        }
+
+        .slide-right {
+            animation: slideRight 0.8s ease-out;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-5 {
+            animation-delay: 0.5s;
+        }
+
+        .delay-6 {
+            animation-delay: 0.6s;
+        }
+
+        .delay-7 {
+            animation-delay: 0.7s;
+        }
+
+        .delay-8 {
+            animation-delay: 0.8s;
+        }
+
+        .delay-9 {
+            animation-delay: 0.9s;
+        }
+
+        .delay-10 {
+            animation-delay: 1s;
+        }
+
+        .delay-11 {
+            animation-delay: 1.1s;
+        }
+
+        .delay-12 {
+            animation-delay: 1.2s;
+        }
+
+        .delay-13 {
+            animation-delay: 1.3s;
+        }
+
+        .delay-14 {
+            animation-delay: 1.4s;
+        }
+
+        .delay-15 {
+            animation-delay: 1.5s;
+        }
+
+        .transition-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .transition-link::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #DEB887, #8B4513);
+            transition: width 0.3s ease;
+        }
+
+        .transition-link:hover::before {
+            width: 100%;
+        }
+
+        /* Анимации если не загрузился animations.css */
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Плавающие смайлики для дизайна -->
+    <div class="floating-emoji emoji-1">🏠</div>
+    <div class="floating-emoji emoji-2">🔑</div>
+    <div class="floating-emoji emoji-3">💰</div>
+    <div class="floating-emoji emoji-4">🏢</div>
+    <div class="floating-emoji emoji-5">📊</div>
+    <div class="floating-emoji emoji-6">🏡</div>
+    <div class="floating-emoji emoji-7">📈</div>
+    <div class="floating-emoji emoji-8">💎</div>
+
     <div class="container">
-        <h1>📝 Заполните характеристики</h1>
+        <!-- Заголовок с анимацией -->
+        <h1 class="slide-left">📝 Заполните характеристики</h1>
 
         <form method="post">
             {% csrf_token %}
 
-            <div class="form-group">
+            <!-- Каждое поле с анимацией и задержкой -->
+            <div class="form-group slide-right delay-1" data-tooltip="Выберите тип недвижимости">
                 <label>Тип недвижимости:</label>
                 {{ form.property_type }}
                 {% if form.property_type.errors %}
@@ -130,7 +454,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group slide-left delay-2" data-tooltip="Выберите состояние объекта">
                 <label>Состояние:</label>
                 {{ form.condition }}
                 {% if form.condition.errors %}
@@ -138,7 +462,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group slide-right delay-3" data-tooltip="Введите общую площадь в квадратных метрах">
                 <label>Общая площадь (м²):</label>
                 {{ form.total_area }}
                 {% if form.total_area.errors %}
@@ -146,7 +470,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group slide-left delay-4" data-tooltip="Введите жилую площадь">
                 <label>Жилая площадь (м²):</label>
                 {{ form.living_area }}
                 {% if form.living_area.errors %}
@@ -154,7 +478,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group slide-right delay-5" data-tooltip="Введите площадь кухни">
                 <label>Площадь кухни (м²):</label>
                 {{ form.kitchen_area }}
                 {% if form.kitchen_area.errors %}
@@ -162,7 +486,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group slide-left delay-6" data-tooltip="Укажите количество комнат">
                 <label>Количество комнат:</label>
                 {{ form.rooms_count }}
                 {% if form.rooms_count.errors %}
@@ -170,7 +494,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group slide-right delay-7" data-tooltip="Укажите этаж">
                 <label>Этаж:</label>
                 {{ form.floor }}
                 {% if form.floor.errors %}
@@ -178,7 +502,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group slide-left delay-8" data-tooltip="Сколько всего этажей в доме">
                 <label>Всего этажей:</label>
                 {{ form.total_floors }}
                 {% if form.total_floors.errors %}
@@ -186,7 +510,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group slide-right delay-9" data-tooltip="Год постройки дома">
                 <label>Год постройки:</label>
                 {{ form.year_built }}
                 {% if form.year_built.errors %}
@@ -194,7 +518,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group slide-left delay-10" data-tooltip="Введите город">
                 <label>Город:</label>
                 {{ form.city }}
                 {% if form.city.errors %}
@@ -202,7 +526,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group slide-right delay-11" data-tooltip="Введите район (необязательно)">
                 <label>Район:</label>
                 {{ form.district }}
                 {% if form.district.errors %}
@@ -210,7 +534,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group slide-left delay-12" data-tooltip="Введите улицу (необязательно)">
                 <label>Улица:</label>
                 {{ form.street }}
                 {% if form.street.errors %}
@@ -218,7 +542,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group slide-right delay-13" data-tooltip="Расстояние до ближайшего метро">
                 <label>Расстояние до метро (км):</label>
                 {{ form.distance_to_metro }}
                 {% if form.distance_to_metro.errors %}
@@ -226,7 +550,8 @@
                 {% endif %}
             </div>
 
-            <div class="checkbox-group">
+            <!-- Чекбоксы с анимацией -->
+            <div class="checkbox-group fade-in delay-14">
                 <div class="checkbox-item">
                     {{ form.has_balcony }}
                     <label>Балкон</label>
@@ -237,9 +562,10 @@
                 </div>
             </div>
 
-            <div class="button-group">
-                <button type="submit">💰 Оценить стоимость</button>
-                <a href="{% url 'index' %}" class="btn-link">🏠 На главную</a>
+            <!-- Кнопки с анимацией -->
+            <div class="button-group fade-in delay-15">
+                <button type="submit" class="transition-link pulse">💰 Оценить стоимость</button>
+                <a href="{% url 'index' %}" class="btn-link transition-link">🏠 На главную</a>
             </div>
         </form>
     </div>

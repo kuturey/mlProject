@@ -3,20 +3,99 @@
 <head>
     <meta charset="utf-8">
     <title>Оценка недвижимости</title>
+    <link rel="stylesheet" href="/static/css/animations.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url('/static/images/background.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('/static/images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            filter: brightness(0.7);
+            z-index: -1;
+        }
+
+        /* Левый стикер с деньгами */
+        body::after {
+            content: '💰';
+            font-size: 120px;
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-10deg);
+            opacity: 0.15;
+            animation: moneyFloat 5s ease-in-out infinite;
+            text-shadow: 0 0 20px gold;
+            z-index: 0;
+        }
+
+        /* Правый стикер с деньгами */
+        .money-right {
+            content: '💵';
+            font-size: 150px;
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%) rotate(10deg);
+            opacity: 0.15;
+            animation: moneyFloat 6s ease-in-out infinite reverse;
+            text-shadow: 0 0 20px gold;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Дополнительные денежные стикеры */
+        .money-top-left {
+            content: '💶';
+            font-size: 90px;
+            position: fixed;
+            left: 50px;
+            top: 100px;
+            opacity: 0.1;
+            transform: rotate(-25deg);
+            animation: moneyFloat 7s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .money-bottom-right {
+            content: '💷';
+            font-size: 110px;
+            position: fixed;
+            right: 80px;
+            bottom: 80px;
+            opacity: 0.1;
+            transform: rotate(20deg);
+            animation: moneyFloat 8s ease-in-out infinite reverse;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes moneyFloat {
+            0%, 100% {
+                transform: translateY(-50%) rotate(-10deg) translateY(0);
+            }
+            50% {
+                transform: translateY(-50%) rotate(-5deg) translateY(-30px);
+            }
+        }
+
         .container {
             max-width: 1300px;
             background: rgba(255, 255, 255, 0.6);
@@ -25,20 +104,60 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             backdrop-filter: blur(5px);
             text-align: center;
+            position: relative;
+            animation: none;
+            z-index: 1;
         }
+
+        .container::before {
+            content: '🏠';
+            font-size: 100px;
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            opacity: 0.1;
+            transform: rotate(-15deg);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .container::after {
+            content: '🔑';
+            font-size: 80px;
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            opacity: 0.1;
+            transform: rotate(15deg);
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-15deg); }
+            50% { transform: translateY(-20px) rotate(-10deg); }
+        }
+
         h1 {
             color: #000000;
             font-size: 68px;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
-        p {
+
+        /* Убираем старую анимацию печати и добавляем классы из animations.css */
+        h1.slide-left {
+            overflow: visible;
+            white-space: normal;
+            animation: slideLeft 0.8s ease-out;
+        }
+
+        p.slide-right {
             color: #000000;
             line-height: 1.8;
             font-size: 40px;
             margin-bottom: 30px;
-             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
+
         .btn {
             display: inline-block;
             padding: 15px 40px;
@@ -50,18 +169,120 @@
             font-weight: bold;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
         }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(transparent 30%, rgba(255, 255, 255, 0.3), transparent 70%);
+            transform: rotate(30deg);
+            transition: 0.5s;
+            opacity: 0;
+            z-index: -1;
+        }
+
+        .btn:hover::after {
+            opacity: 1;
+            transform: rotate(30deg) translate(10%, 10%);
+        }
+
         .btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        /* Классы для анимаций из animations.css */
+        .slide-left {
+            animation: slideLeft 0.8s ease-out;
+        }
+
+        .slide-right {
+            animation: slideRight 0.8s ease-out;
+        }
+
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .transition-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .transition-link::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #DEB887, #8B4513);
+            transition: width 0.3s ease;
+        }
+
+        .transition-link:hover::before {
+            width: 100%;
+        }
+
+        /* Анимации если не загрузился animations.css */
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🏠 Оценка стоимости недвижимости</h1>
-        <p>Введите характеристики объекта и получите его примерную стоимость с помощью машинного обучения</p>
-        <a href="{% url 'evaluate' %}" class="btn">Начать оценку →</a>
+        <!-- Добавлены классы анимаций -->
+        <h1 class="slide-left">🏠 Оценка стоимости недвижимости</h1>
+        <p class="slide-right delay-1">Введите характеристики объекта и получите его примерную стоимость с помощью машинного обучения</p>
+        <a href="{% url 'evaluate' %}" class="btn pulse transition-link">Начать оценку →</a>
     </div>
+
+    <!-- Добавляем денежные стикеры как отдельные элементы -->
+    <div class="money-right">💵</div>
+    <div class="money-top-left">💶</div>
+    <div class="money-bottom-right">💷</div>
 </body>
 </html>
