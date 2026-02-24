@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Оценка недвижимости</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .btn-link {
+            background-color: #666;
+            text-decoration: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Оценка стоимости недвижимости</h1>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Тип недвижимости:</label>
+                {{ form.property_type }}
+                {% if form.property_type.errors %}
+                    <div class="error">{{ form.property_type.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Состояние:</label>
+                {{ form.condition }}
+                {% if form.condition.errors %}
+                    <div class="error">{{ form.condition.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Общая площадь (м²):</label>
+                {{ form.total_area }}
+                {% if form.total_area.errors %}
+                    <div class="error">{{ form.total_area.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Жилая площадь (м²):</label>
+                {{ form.living_area }}
+                {% if form.living_area.errors %}
+                    <div class="error">{{ form.living_area.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Площадь кухни (м²):</label>
+                {{ form.kitchen_area }}
+                {% if form.kitchen_area.errors %}
+                    <div class="error">{{ form.kitchen_area.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Количество комнат:</label>
+                {{ form.rooms_count }}
+                {% if form.rooms_count.errors %}
+                    <div class="error">{{ form.rooms_count.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Этаж:</label>
+                {{ form.floor }}
+                {% if form.floor.errors %}
+                    <div class="error">{{ form.floor.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Всего этажей:</label>
+                {{ form.total_floors }}
+                {% if form.total_floors.errors %}
+                    <div class="error">{{ form.total_floors.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Год постройки:</label>
+                {{ form.year_built }}
+                {% if form.year_built.errors %}
+                    <div class="error">{{ form.year_built.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Город:</label>
+                {{ form.city }}
+                {% if form.city.errors %}
+                    <div class="error">{{ form.city.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Район:</label>
+                {{ form.district }}
+                {% if form.district.errors %}
+                    <div class="error">{{ form.district.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Улица:</label>
+                {{ form.street }}
+                {% if form.street.errors %}
+                    <div class="error">{{ form.street.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Расстояние до метро (км):</label>
+                {{ form.distance_to_metro }}
+                {% if form.distance_to_metro.errors %}
+                    <div class="error">{{ form.distance_to_metro.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>
+                    {{ form.has_balcony }} Балкон
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    {{ form.has_parking }} Парковка
+                </label>
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Оценить</button>
+                <a href="{% url 'index' %}" class="btn-link">На главную</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
