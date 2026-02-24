@@ -6,43 +6,62 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f0f0f0;
-            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
+            max-width: 1300px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 100px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+            text-align: center;
         }
         h1 {
-            color: #333;
+            color: #000000;
+            font-size: 68px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         p {
-            color: #666;
-            line-height: 1.6;
+            color: #000000;
+            line-height: 1.8;
+            font-size: 40px;
+            margin-bottom: 30px;
+             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         .btn {
             display: inline-block;
-            padding: 10px 20px;
-            background-color: #4CAF50;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #D2B48C 0%, #8B4513 100%);
             color: white;
             text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
+            border-radius: 50px;
+            font-size: 46px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
         }
         .btn:hover {
-            background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Оценка стоимости недвижимости</h1>
-        <p>Введите характеристики объекта и получите его примерную стоимость</p>
-        <a href="{% url 'evaluate' %}" class="btn">Начать оценку</a>
+        <h1>🏠 Оценка стоимости недвижимости</h1>
+        <p>Введите характеристики объекта и получите его примерную стоимость с помощью машинного обучения</p>
+        <a href="{% url 'evaluate' %}" class="btn">Начать оценку →</a>
     </div>
 </body>
 </html>

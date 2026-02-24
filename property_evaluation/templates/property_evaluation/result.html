@@ -6,80 +6,154 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            background-image: url('/static/images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+        h1 {
+            color: #000000;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 55px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         .price {
-            background-color: #4CAF50;
+            background: linear-gradient(135deg, #DEB887 0%, #8B4513 100%);
             color: white;
-            padding: 20px;
+            padding: 30px;
             text-align: center;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 24px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            font-size: 50px;
+            font-weight: bold;
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
         }
         .details {
-            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+        h3 {
+            color: #000000;
+            font-size: 36px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
         }
         .row {
             display: flex;
             justify-content: space-between;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 30px;
         }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
+        .row:last-child {
+            border-bottom: none;
+        }
+        .row span:first-child {
+            font-weight: bold;
+            color: #555;
+        }
+        .row span:last-child {
+            color: #333;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .btn, button {
+            padding: 12px 30px;
             border: none;
-            border-radius: 4px;
+            border-radius: 50px;
+            font-size: 36px;
+            font-weight: bold;
             cursor: pointer;
-            margin-right: 10px;
-        }
-        .btn-link {
-            background-color: #666;
+            transition: all 0.3s ease;
             text-decoration: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
             display: inline-block;
+        }
+        .btn-primary, button {
+           background: linear-gradient(135deg, #DEB887 0%, #8B4513 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+            font-size: 36px;
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #800000 0%, #8B4513 100%);
+            color: white;
+            font-size: 36px;
+        }
+        .btn-primary:hover, button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+        }
+        .btn-secondary:hover {
+            background: #555;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Результат оценки</h1>
+        <h1>🏆 Результат оценки</h1>
 
         <div class="price">
             {% if property.predicted_price %}
                 {{ property.predicted_price|floatformat:0 }} ₽
             {% else %}
-                Цена будет здесь после интеграции модели
+                Модель еще не интегрирована
             {% endif %}
         </div>
 
         <div class="details">
-            <h3>Характеристики:</h3>
+            <h3>📋 Характеристики объекта:</h3>
 
             <div class="row">
-                <span>Тип:</span>
+                <span>Тип недвижимости:</span>
                 <span>{{ property.get_property_type_display }}</span>
             </div>
 
             <div class="row">
-                <span>Площадь:</span>
+                <span>Общая площадь:</span>
                 <span>{{ property.total_area }} м²</span>
             </div>
 
+            {% if property.living_area %}
             <div class="row">
-                <span>Комнат:</span>
+                <span>Жилая площадь:</span>
+                <span>{{ property.living_area }} м²</span>
+            </div>
+            {% endif %}
+
+            {% if property.kitchen_area %}
+            <div class="row">
+                <span>Площадь кухни:</span>
+                <span>{{ property.kitchen_area }} м²</span>
+            </div>
+            {% endif %}
+
+            <div class="row">
+                <span>Количество комнат:</span>
                 <span>{{ property.rooms_count }}</span>
             </div>
 
@@ -88,21 +162,57 @@
                 <span>{{ property.floor }}/{{ property.total_floors }}</span>
             </div>
 
+            {% if property.year_built %}
+            <div class="row">
+                <span>Год постройки:</span>
+                <span>{{ property.year_built }}</span>
+            </div>
+            {% endif %}
+
             <div class="row">
                 <span>Город:</span>
                 <span>{{ property.city }}</span>
             </div>
 
+            {% if property.district %}
+            <div class="row">
+                <span>Район:</span>
+                <span>{{ property.district }}</span>
+            </div>
+            {% endif %}
+
             <div class="row">
                 <span>Состояние:</span>
                 <span>{{ property.get_condition_display }}</span>
             </div>
+
+            <div class="row">
+                <span>Балкон:</span>
+                <span>{% if property.has_balcony %}Да{% else %}Нет{% endif %}</span>
+            </div>
+
+            <div class="row">
+                <span>Парковка:</span>
+                <span>{% if property.has_parking %}Да{% else %}Нет{% endif %}</span>
+            </div>
+
+            {% if property.distance_to_metro %}
+            <div class="row">
+                <span>Расстояние до метро:</span>
+                <span>{{ property.distance_to_metro }} км</span>
+            </div>
+            {% endif %}
+
+            <div class="row">
+                <span>Дата оценки:</span>
+                <span>{{ property.created_at|date:"d.m.Y H:i" }}</span>
+            </div>
         </div>
 
-        <div style="margin-top: 20px;">
-            <a href="{% url 'evaluate' %}"><button>Новая оценка</button></a>
-            <a href="{% url 'index' %}" class="btn-link">На главную</a>
+        <div class="button-group">
+            <a href="{% url 'evaluate' %}" class="btn-primary btn">🔄 Новая оценка</a>
+            <a href="{% url 'index' %}" class="btn-secondary btn">🏠 На главную</a>
         </div>
     </div>
 </body>
-</html>
+</html></html>
