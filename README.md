@@ -1,6 +1,5 @@
 Вот отредактированный и красиво оформленный текст вашего README:
 
-```markdown
 # Оценка стоимости недвижимости
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
