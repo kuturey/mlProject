@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import PropertyEvaluationForm
 from .models import PropertyEvaluation
-from .ml_utils import predictor  # ← ЭТО НОВАЯ СТРОКА (импорт модели)
+from .ml_utils import predictor
+from datetime import datetime  # ← ДОБАВИТЬ ДЛЯ РАСЧЁТА ВОЗРАСТА
 
 
 def index(request):
@@ -17,19 +18,20 @@ def evaluate_property(request):
             # Сохраняем данные в базу (но пока не коммитим)
             property_data = form.save(commit=False)
 
-            # ===== НОВЫЙ КОД: ВЫЗОВ МОДЕЛИ =====
-            # Подготовка признаков для модели
+            # ===== РАСЧЁТ ВОЗРАСТА ДОМА =====
+            current_year = datetime.now().year
+            building_age = current_year - (property_data.year_built or 2000)
+
+            # ===== ПОДГОТОВКА ПРИЗНАКОВ ДЛЯ МОДЕЛИ =====
             features = {
-                'author_type': 1,  # Пока заглушка, потом закодируем
-                'district': 1,  # Пока заглушка, потом закодируем
+                'total_meters': property_data.total_area,
+                'kitchen_meters': property_data.kitchen_area or 0,
+                'rooms_count': property_data.rooms_count,
                 'floor': property_data.floor,
                 'floors_count': property_data.total_floors,
-                'kitchen_meters': property_data.kitchen_area or 0,
-                'living_meters': property_data.living_area or 0,
-                'rooms_count': property_data.rooms_count,
-                'total_meters': property_data.total_area,
-                'year_of_construction': property_data.year_built or 2000
+                'building_age': building_age,
             }
+            # ===========================================
 
             # Получаем предсказание от модели
             predicted_price = predictor.predict(features)
@@ -39,9 +41,8 @@ def evaluate_property(request):
             else:
                 # Если модель не сработала, ставим тестовую цену
                 property_data.predicted_price = property_data.total_area * 80000
-            # ===================================
 
-            property_data.save()  # Теперь сохраняем с ценой
+            property_data.save()
 
             # Перенаправляем на страницу с результатом
             return redirect('result', pk=property_data.pk)
