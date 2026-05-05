@@ -3,5 +3,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('property_evaluation.urls')),  # подключаем URLы нашего приложения
+    path('', include('property_evaluation.urls')),  # подключаем URL нашего приложения
 ]

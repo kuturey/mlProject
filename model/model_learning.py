@@ -18,7 +18,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 ###########################################
-df = pd.read_csv('dataset9.csv')
+df = pd.read_csv('../ml_pipeline/data/dataset9.csv')
 # print(df)
 
 # Разделение данных на признаки и целевую переменную
