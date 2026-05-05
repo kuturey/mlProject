@@ -1,0 +1,13 @@
+[
+    "author_type",
+    "district",
+    "floor",
+    "floors_count",
+    "kitchen_meters",
+    "rooms_count",
+    "street",
+    "total_meters",
+    "underground",
+    "is_studio",
+    "house_age"
+]
