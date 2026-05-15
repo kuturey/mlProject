@@ -5,9 +5,11 @@
     "floors_count",
     "kitchen_meters",
     "rooms_count",
-    "street",
     "total_meters",
     "underground",
     "is_studio",
-    "house_age"
+    "house_age",
+    "has_metro",
+    "metro_zone",
+    "effective_metro_distance"
 ]

@@ -22,13 +22,14 @@ def calc_metrics(y_true_log, y_pred_log):
     return mae, rmse, mape, r2
 
 
-df = pd.read_csv('test_output.csv')
+df = pd.read_csv('final_output.csv')
 
 cat_features = [
     'author_type',
     'district',
-    'street',
-    'underground'
+    'underground',
+    'is_studio',
+    'metro_zone'
 ]
 
 # print(df)
@@ -73,7 +74,7 @@ for config in configs:
     print("=" * 50)
 
     model = CatBoostRegressor(
-        iterations=5000,
+        iterations=10000,
         learning_rate=config["learning_rate"],
         depth=config["depth"],
         l2_leaf_reg=config["l2_leaf_reg"],

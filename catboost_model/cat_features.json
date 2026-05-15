@@ -1,6 +1,7 @@
 [
     "author_type",
     "district",
-    "street",
-    "underground"
+    "underground",
+    "is_studio",
+    "metro_zone"
 ]
