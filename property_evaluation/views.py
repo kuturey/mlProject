@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import PropertyEvaluation
 from .forms import PropertyEvaluationForm
 from datetime import datetime
+from .ml_utils import predictor
 
 
 def index(request):
@@ -14,38 +15,38 @@ def evaluate_property(request):
         if form.is_valid():
             property_data = form.save(commit=False)
 
-            # Расчёт возраста дома
             current_year = datetime.now().year
             year_built = property_data.year_built or 2000
-            building_age = current_year - year_built
+            property_data.house_age = current_year - year_built
 
-            # Подготовка признаков для модели (6 штук)
             features = {
-                'total_meters': float(property_data.total_area),
-                'kitchen_meters': float(property_data.kitchen_area or 0),
-                'rooms_count': int(property_data.rooms_count),
-                'floor': int(property_data.floor),
-                'floors_count': int(property_data.total_floors),
-                'building_age': building_age,
+                'author_type': property_data.author_type,
+                'district': property_data.district,
+                'floor': property_data.floor,
+                'floors_count': property_data.floors_count,
+                'kitchen_meters': float(property_data.kitchen_meters),
+                'rooms_count': property_data.rooms_count,
+                'street': property_data.street or '',
+                'total_meters': float(property_data.total_meters),
+                'is_studio': int(property_data.is_studio),
+                'house_age': property_data.house_age,
+                'house_number': property_data.house_number or '',
             }
 
-            # Импортируем предсказатель
-            from .ml_utils import predictor
+            predicted_price_rub = predictor.predict(features)
 
-            predicted_price = predictor.predict(features)
-
-            if predicted_price:
-                property_data.predicted_price = predicted_price
-                property_data.save()
-                return redirect('result', pk=property_data.pk)
+            if predicted_price_rub:
+                property_data.predicted_price = predicted_price_rub / 1_000_000
             else:
-                property_data.predicted_price = property_data.total_area * 80000
-                property_data.save()
-                return redirect('result', pk=property_data.pk)
+                property_data.predicted_price = float(property_data.total_meters) * 0.13
 
-    else:
-        form = PropertyEvaluationForm()
+            property_data.save()
+            return redirect('result', pk=property_data.pk)
 
+        else:
+            return render(request, 'property_evaluation/evaluate.html', {'form': form})
+
+    form = PropertyEvaluationForm()
     return render(request, 'property_evaluation/evaluate.html', {'form': form})
 
 
