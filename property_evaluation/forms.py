@@ -17,7 +17,7 @@ class PropertyEvaluationForm(forms.ModelForm):
             'floor': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Например: 5'}),
             'floors_count': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Например: 12'}),
             'year_built': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Например: 2015'}),
-            'author_type': forms.Select(attrs={'class': 'form-control'}, choices=[('real_estate_agent', 'Агент'), ('owner', 'Собственник'), ('developer', 'Застройщик')]),
+            'author_type': forms.Select(attrs={'class': 'form-control'}, choices=[('realtor', 'Агент'), ('owner', 'Собственник'), ('developer', 'Застройщик')]),
             'district': forms.Select(attrs={'class': 'form-control'}, choices=[
                 ('Центральный', 'Центральный'), ('Октябрьский', 'Октябрьский'),
                 ('Ленинский', 'Ленинский'), ('Кировский', 'Кировский'),
